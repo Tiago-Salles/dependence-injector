@@ -1,9 +1,9 @@
 typedef InstanceCreator<T> = T Function();
 
-class DependenceInjector {
-  DependenceInjector._privateConstructor();
-  static final _instance = DependenceInjector._privateConstructor();
-  factory DependenceInjector.instance() => _instance;
+class DependencyInjector {
+  DependencyInjector._privateConstructor();
+  static final _instance = DependencyInjector._privateConstructor();
+  factory DependencyInjector.instance() => _instance;
 
   final _instances = <Type, _InstanceGenerator<Object>>{};
 
@@ -12,17 +12,17 @@ class DependenceInjector {
     _instances[T] = _InstanceGenerator(instanceType, singletonInstance);
   }
 
-  T? injectDependence<T extends Object>(
+  T? injectDependency<T extends Object>(
     InstanceCreator<T> instanceType, {
     bool singletonInstance = false,
   }) {
     Object? instance;
 
     if (_instances.containsKey(T)) {
-      instance = _instances[T]?.genereteInstance();
+      instance = _instances[T]?.generateInstance();
     } else {
       registerInstance<T>(instanceType, singletonInstance);
-      instance = _instances[T]?.genereteInstance();
+      instance = _instances[T]?.generateInstance();
     }
 
     if (instance != null && instance is T) {
@@ -40,7 +40,7 @@ class _InstanceGenerator<T> {
   final InstanceCreator<T> _instanceCreator;
   _InstanceGenerator(this._instanceCreator, this._singletonInstance);
 
-  T? genereteInstance() {
+  T? generateInstance() {
     if (_singletonInstance && firstInstance) {
       _instance = _instanceCreator();
       firstInstance = false;

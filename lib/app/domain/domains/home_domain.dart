@@ -1,15 +1,25 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 
-class HomeDomain {
+abstract class IDomain {
+  ValueNotifier<int>? counterValueNotifier;
+  ValueNotifier<bool>? isAnimating;
+  void increment();
+}
+
+class HomeDomain implements IDomain {
   HomeDomain() {
     log("-----INSTÂNCIA DO OBJETO CRIADA-----");
   }
 
-  ValueNotifier<int> counterValueNotifier = ValueNotifier<int>(0);
-  ValueNotifier<bool> isAnimating = ValueNotifier<bool>(false);
+  @override
+  ValueNotifier<int>? counterValueNotifier = ValueNotifier<int>(0);
+
+  @override
+  ValueNotifier<bool>? isAnimating = ValueNotifier<bool>(false);
+
+  @override
   void increment() {
-    counterValueNotifier.value++;
+    counterValueNotifier?.value++;
   }
 }

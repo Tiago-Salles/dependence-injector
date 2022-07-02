@@ -12,14 +12,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
-  late HomeDomain? homeDomain;
+  late IDomain? homeDomain;
   late Animation<double> animation;
   double opacity = 0;
   AnotherInstance anotherInstance = AnotherInstance();
 
   @override
   void initState() {
-    homeDomain = AppModules.getInstance<HomeDomain>(() => HomeDomain(), true);
+    homeDomain = AppModules.getInstance<IDomain>(() => HomeDomain(), true);
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ValueListenableBuilder<bool>(
-              valueListenable: homeDomain!.isAnimating,
+              valueListenable: homeDomain!.isAnimating!,
               builder: (context, isAnimating, widget) {
                 if (isAnimating == true) {
                   return const Text(
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage>
               },
             ),
             ValueListenableBuilder<int>(
-              valueListenable: homeDomain!.counterValueNotifier,
+              valueListenable: homeDomain!.counterValueNotifier!,
               builder: (context, counter, widget) {
                 return RotationTransition(
                   turns: animation,
@@ -71,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           homeDomain?.increment();
-          homeDomain?.isAnimating.value = true;
+          homeDomain?.isAnimating?.value = true;
           animationController.forward(from: 0).then((value) {
-            homeDomain?.isAnimating.value = false;
+            homeDomain?.isAnimating?.value = false;
           });
         },
         tooltip: 'Increment',
@@ -84,6 +84,6 @@ class _MyHomePageState extends State<MyHomePage>
 }
 
 class AnotherInstance {
-  HomeDomain? homeDomain =
-      AppModules.getInstance<HomeDomain>(() => HomeDomain(), true);
+  IDomain? homeDomain =
+      AppModules.getInstance<IDomain>(() => HomeDomain(), true);
 }
