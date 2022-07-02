@@ -1,4 +1,4 @@
-# dependence_injector
+# dependency_injector
 
 This project was created to implement a dependency injector created by me. 
 
