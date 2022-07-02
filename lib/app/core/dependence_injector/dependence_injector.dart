@@ -7,15 +7,24 @@ class DependenceInjector {
 
   final _instances = <Type, _InstanceGenerator<Object>>{};
 
-  void registerInstance<T>(
-    InstanceCreator instanceType, {
-    bool singletonInstance = false,
-  }) {
-    _instances[T] = _InstanceGenerator(() => instanceType, singletonInstance);
+  void registerInstance<T extends Object>(
+      InstanceCreator<T> instanceType, bool singletonInstance) {
+    _instances[T] = _InstanceGenerator(instanceType, singletonInstance);
   }
 
-  T? injectDependence<T extends Object>() {
-    final instance = _instances[T]?.genereteInstance();
+  T? injectDependence<T extends Object>(
+    InstanceCreator<T> instanceType, {
+    bool singletonInstance = false,
+  }) {
+    Object? instance;
+
+    if (_instances.containsKey(T)) {
+      instance = _instances[T]?.genereteInstance();
+    } else {
+      registerInstance<T>(instanceType, singletonInstance);
+      instance = _instances[T]?.genereteInstance();
+    }
+
     if (instance != null && instance is T) {
       return instance;
     } else {
@@ -27,12 +36,14 @@ class DependenceInjector {
 class _InstanceGenerator<T> {
   T? _instance;
   final bool _singletonInstance;
+  bool firstInstance = true;
   final InstanceCreator<T> _instanceCreator;
   _InstanceGenerator(this._instanceCreator, this._singletonInstance);
 
   T? genereteInstance() {
-    if (_singletonInstance) {
+    if (_singletonInstance && firstInstance) {
       _instance = _instanceCreator();
+      firstInstance = false;
     }
     return _instance ?? _instanceCreator();
   }

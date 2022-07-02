@@ -1,4 +1,4 @@
-import 'package:dependence_injector/app/app_widget.dart';
+import 'package:dependence_injector/app/my_app.dart';
 import 'package:flutter/material.dart';
 
 void main() {
